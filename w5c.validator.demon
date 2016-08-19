@@ -1,0 +1,140 @@
+1. 首先加载 必须的js文件
+    <!--表单验证插件-->
+    <script src="../vendor/angularJS/angular-validator.js"></script>
+2. 依赖
+salesApp = angular.module("salesApp", ["w5c.validator"]);
+3. 配置
+  salesApp.config(function (w5cValidatorProvider) {
+    // 全局配置
+    w5cValidatorProvider.config({
+        blurTrig: false,
+        showError: true,
+        removeError: true
+
+    });
+    w5cValidatorProvider.setRules({
+        name: {
+            required: "输入的用户名不能为空",
+            pattern: "用户名必须输入字母、数字、下划线,以字母开头"
+        },
+        phone: {
+            required: "输入手机号码不能为空",
+            number: "手机号码格式不正确"
+        },
+        email: {
+            required: "输入的邮箱地址不能为空",
+            email: "输入邮箱地址格式不正确"
+        },
+        firm: {
+            required: "输入的邮箱地址不能为空",
+            email: "输入邮箱地址格式不正确"
+        },
+        position: {
+            required: "输入的用户名不能为空",
+            pattern: "用户名必须输入字母、数字、下划线,以字母开头"
+        },
+        province: {
+            required: "输入的邮箱地址不能为空",
+            email: "输入邮箱地址格式不正确"
+        },
+        city: {
+            required: "输入的用户名不能为空",
+            pattern: "用户名必须输入字母、数字、下划线,以字母开头"
+        }
+    });
+});
+4. 控制器中验证
+var vm = $scope.vm = {
+        htmlSource: "",
+        showErrorType: "1",
+        showDynamicElement: true,
+        dynamicName: "dynamicName",
+        entity: {}
+    };
+
+    vm.saveEntity = function ($event) {
+        //do somethings for bz
+        alert("Save Successfully!!!");
+    };
+
+    //每个表单的配置，如果不设置，默认和全局配置相同
+    vm.validateOptions = {
+        blurTrig: true
+    };
+
+    vm.customizer = function () {
+        return vm.entity.customizer > vm.entity.number;
+    };
+
+    vm.changeShowType = function () {
+        if (vm.showErrorType == 2) {
+            vm.validateOptions.showError = false;
+            vm.validateOptions.removeError = false;
+        } else {
+            vm.validateOptions.showError = true;
+            vm.validateOptions.removeError = true;
+        }
+    };
+
+    vm.types = [
+        {
+            value: 1,
+            text: "选择框"
+        },
+        {
+            value: 2,
+            text: "输入框"
+        }
+    ];
+    
+    5. html界面
+    <form class="form-horizontal w5c-form demo-form" role="form"
+                      w5c-form-validate="vm.validateOptions" novalidate name="validateForm">
+                    <br/>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">渠道类型: </label>
+
+                        <div class="col-sm-10">
+                            <select ng-modle="type" class="form-control">
+                                <option value="个人">个人</option>
+                                <option value="机构">机构</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="person">
+                        <p>
+                            <input type="text" name="name" ng-model="vm.entity.name" required class="form-control"
+                                   placeholder="输入用户名">
+                        </p>
+                        <p>
+                            <select class="form-control" ng-model="sex">
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </p>
+                        <p>
+                            <input type="number" ng-model="phone" class="form-control" placeholder="手机"/>
+                        </p>
+                        <p>
+                            <input type="text" ng-model="telphone" class="form-control" placeholder="电话"/>
+                        </p>
+                        <p>
+                            <input type="email" name="email" ng-model="vm.entity.email" required class="form-control"
+                                   placeholder="输入邮箱">
+                        </p>
+                        <p><input type="text" ng-model="firm" class="form-control" placeholder="单位"/></p>
+                        <p><input type="text" ng-model="position" class="form-control" placeholder="职务"/></p>
+                        <p><input type="text" ng-model="province" class="form-control" placeholder="所在省"/></p>
+                        <p><input type="text" ng-model="city" class="form-control" placeholder="所在市"/></p>
+                        <p><input type="text" ng-model="address" class="form-control" placeholder="联系地址"/></p>
+                        <p><input type="text" ng-model="agent" class="form-control" placeholder="代理人"/></p>
+                        <p><input type="text" ng-model="agentPhone" class="form-control" placeholder="代理人手机"/></p>
+                        <p></p>
+                        <div class="panel">
+                            <div style="margin-bottom:1.25rem" class="ueditor" ng-model="remarks"
+                                 config="_simpleConfig"></div>
+                        </div>
+                    </div>
+                </form>
